@@ -9,19 +9,37 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var globars: Globars?
+    //MARK: -  Properties
+    var globars: Globars? {
+        willSet {
+            guard let globars = newValue else { return }
+                DispatchQueue.main.async {
+                    self.indicator.isHidden = true
+                    self.indicator.stopAnimating()
+                    if globars.success == false {
+                        self.showAlert(title: "Ошибка",
+                                       message: self.globars?.data ?? "try again!")
+                    } else {
+                        self.performSegue(withIdentifier: "Map", sender: nil)
+                    }
+                }
+        }
+    }
     let url = URL(string: "https://go.globars.ru/api/auth/login")
     var isVertical = true
     
+    //MARK: - Outlets
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var passTextField: UITextField!
     @IBOutlet weak var buttonEnter: UIButton!
+    @IBOutlet weak var indicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         buttonEnter.layer.cornerRadius = 5
         getOrientation()
+        indicator.isHidden = true
     }
     
     override func viewDidLayoutSubviews() {
@@ -34,8 +52,18 @@ class ViewController: UIViewController {
     @IBAction func enterPresed(_ sender: UIButton) {
         postMethod(url: url, userName: nameTextField.text!,
                    password: passTextField.text!)
+        indicator.isHidden = false
+        indicator.startAnimating()
     }
     
+    //MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Map" {
+            
+        }
+    }
+    //MARK: - Helpers Methods
     // Get Orientation
     func getOrientation() {
         let width = view.bounds.width
@@ -58,10 +86,11 @@ class ViewController: UIViewController {
     // POST Method
     func postMethod(url: URL?, userName: String, password: String) {
         guard let url = url else { return }
-        let parameters = ["username": userName, "password": password]
+        let parameters = ["username": "raz", "password": "gabitus"]
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("ru", forHTTPHeaderField: "Accept-Language")
         guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else { return }
         request.httpBody = httpBody
         
@@ -75,14 +104,9 @@ class ViewController: UIViewController {
             do {
                 let decoder = JSONDecoder()
                 self.globars = try decoder.decode(Globars.self, from: data)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    if self.globars?.success == false {
-                        self.showAlert(title: "Error",
-                                       message: self.globars?.data ?? "try again!")
-                    }
-                }
-                
-            } catch {
+                print(self.globars?.data ?? "no data")
+            }
+            catch {
                 print(error)
             }
         }.resume()

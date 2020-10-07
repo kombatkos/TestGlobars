@@ -105,9 +105,8 @@
 			children = (
 				870A7CFB252AD06700931629 /* AppDelegate.swift */,
 				870A7CFD252AD06700931629 /* SceneDelegate.swift */,
-				870A7CFF252AD06700931629 /* ViewController.swift */,
-				87E8F62D252CA5E200E9E5FD /* MapController.swift */,
-				87E8F616252C6E3E00E9E5FD /* Globars.swift */,
+				8733E9D9252DB89300B46322 /* MainLayer */,
+				8733E9DA252DB8D500B46322 /* MapLayer */,
 				870A7D01252AD06700931629 /* Main.storyboard */,
 				870A7D04252AD06A00931629 /* Assets.xcassets */,
 				870A7D06252AD06A00931629 /* LaunchScreen.storyboard */,
@@ -132,6 +131,23 @@
 				870A7D1F252AD06A00931629 /* Info.plist */,
 			);
 			path = TestGlobarsUITests;
+			sourceTree = "<group>";
+		};
+		8733E9D9252DB89300B46322 /* MainLayer */ = {
+			isa = PBXGroup;
+			children = (
+				870A7CFF252AD06700931629 /* ViewController.swift */,
+				87E8F616252C6E3E00E9E5FD /* Globars.swift */,
+			);
+			path = MainLayer;
+			sourceTree = "<group>";
+		};
+		8733E9DA252DB8D500B46322 /* MapLayer */ = {
+			isa = PBXGroup;
+			children = (
+				87E8F62D252CA5E200E9E5FD /* MapController.swift */,
+			);
+			path = MapLayer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
