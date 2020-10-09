@@ -1,5 +1,5 @@
 //
-//  ListObject.swift
+//  ListCars.swift
 //  TestGlobars
 //
 //  Created by Konstantin Porokhov on 09.10.2020.
@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct ListCars {
+struct ListCars: Decodable {
     let success: Bool?
-    let data: [Car]?
+    let data: [Car]
 }
 
-struct Car {
+struct Car: Decodable {
     let id: String
     let name: String
     let checked: Bool
@@ -20,11 +20,11 @@ struct Car {
     let position: Location
     let eye: Bool
     let color: String?
-    let icon: Data
+    let icon: String?
     let rotate: Bool
 }
 
-struct Location {
+struct Location: Decodable {
     let u: String
     let t: Date
     let lt: Double
