@@ -1,0 +1,6 @@
+framework module Pods_TestGlobars {
+  umbrella header "Pods-TestGlobars-umbrella.h"
+
+  export *
+  module * { export * }
+}
