@@ -44,7 +44,7 @@ class Networking {
     }
     
     // Fetch Data
-    func fetchData(request: URLRequest?, completion: @escaping (_ data: Data) -> ()) {
+    private func fetchData(request: URLRequest?, completion: @escaping (_ data: Data) -> ()) {
         guard let request = request else { return }
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, error) in

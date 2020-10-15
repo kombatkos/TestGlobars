@@ -16,7 +16,7 @@
 		870A7D08252AD06A00931629 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 870A7D06252AD06A00931629 /* LaunchScreen.storyboard */; };
 		870A7D13252AD06A00931629 /* TestGlobarsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870A7D12252AD06A00931629 /* TestGlobarsTests.swift */; };
 		870A7D1E252AD06A00931629 /* TestGlobarsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870A7D1D252AD06A00931629 /* TestGlobarsUITests.swift */; };
-		8763B7F22531A61F00AB7B3C /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8763B7F12531A61F00AB7B3C /* MapManager.swift */; };
+		872A7E6B2538A39A00880103 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872A7E6A2538A39A00880103 /* MapManager.swift */; };
 		876833382532075A00A498EF /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 876833372532075A00A498EF /* MapViewController.swift */; };
 		8768334225324B0500A498EF /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8768334125324B0500A498EF /* MenuViewController.swift */; };
 		87C2A7272530E68D004C94BA /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87C2A7262530E68D004C94BA /* Networking.swift */; };
@@ -69,7 +69,7 @@
 		870A7D19252AD06A00931629 /* TestGlobarsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestGlobarsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		870A7D1D252AD06A00931629 /* TestGlobarsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestGlobarsUITests.swift; sourceTree = "<group>"; };
 		870A7D1F252AD06A00931629 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8763B7F12531A61F00AB7B3C /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
+		872A7E6A2538A39A00880103 /* MapManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		876833372532075A00A498EF /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		8768334125324B0500A498EF /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		87C2A7262530E68D004C94BA /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
@@ -206,6 +206,14 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		872A7E722538A3DC00880103 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				872A7E6A2538A39A00880103 /* MapManager.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		8733E9D9252DB89300B46322 /* AuthorizationLayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +226,7 @@
 		8733E9DA252DB8D500B46322 /* MapLayer */ = {
 			isa = PBXGroup;
 			children = (
+				872A7E722538A3DC00880103 /* Helpers */,
 				87EF4A192533891400CFCA73 /* Views */,
 				871262A625331B5200E16349 /* Controllers */,
 				871262A525331B4400E16349 /* Model */,
@@ -257,7 +266,6 @@
 			isa = PBXGroup;
 			children = (
 				87C2A73D25310E32004C94BA /* Alert.swift */,
-				8763B7F12531A61F00AB7B3C /* MapManager.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -512,11 +520,11 @@
 				87C2A73E25310E32004C94BA /* Alert.swift in Sources */,
 				87EF4A2325338B2400CFCA73 /* Menu.swift in Sources */,
 				870A2A27252FA100006D22CF /* UserData.swift in Sources */,
+				872A7E6B2538A39A00880103 /* MapManager.swift in Sources */,
 				87E8F617252C6E3E00E9E5FD /* Globars.swift in Sources */,
 				8768334225324B0500A498EF /* MenuViewController.swift in Sources */,
 				870A7D00252AD06700931629 /* AuthorizationViewController.swift in Sources */,
 				870A7CFC252AD06700931629 /* AppDelegate.swift in Sources */,
-				8763B7F22531A61F00AB7B3C /* MapManager.swift in Sources */,
 				87C9C014253321BD005FA089 /* SceneDelegate.swift in Sources */,
 				87EF4A1E25338A3700CFCA73 /* MenuTableCell.swift in Sources */,
 				87C2A7302530F420004C94BA /* ListCars.swift in Sources */,

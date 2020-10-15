@@ -15,27 +15,26 @@ protocol MenuViewControllerDelegate {
 class MenuViewController: UIViewController {
     
     var delegate: MenuViewControllerDelegate?
-//    var containerDelegate: MapViewControllerDelegate?
-    var index = 0
+    
+    private var index = 0
+    var carsData: ListCars?
     
     @IBOutlet weak var tableView: UITableView!
-    var carsData: ListCars?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureTableView()
     }
     
-    func configureTableView() {
+    private func configureTableView() {
         tableView.register(MenuTableCell.self, forCellReuseIdentifier: MenuTableCell.reuseId)
-//        view.addSubview(tableView)
-//        tableView.frame = view.frame
         tableView.separatorStyle = .none
         tableView.rowHeight = 70
         tableView.backgroundColor = .darkGray
     }
     
 }
+//MARK: - UITableViewDelegate
 
 extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
     

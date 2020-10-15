@@ -11,41 +11,39 @@ protocol URLStringDelegate: class {
     var urlString: String { get }
 }
 
-protocol AuthorizationViewControllerDelegate: class {
-    func showMap()
-}
-
 class AuthorizationViewController: UIViewController, URLStringDelegate {
     
     //MARK: -  Properties
-    let networking = Networking()
-    let alert = Alert()
     
-    var globars: Globars? {
+    private let networking = Networking()
+    private let alert = Alert()
+    
+    private var globars: Globars? {
+        // Observer
         willSet {
             guard let globars = newValue else { return }
                 DispatchQueue.main.async {
                     self.indicator.isHidden = true
                     self.indicator.stopAnimating()
                     if globars.success == false {
+                        // Show Alert
                         self.alert.showAlert(title: "Ошибка",
-                                        message: self.globars?.data ?? "try again!", completion: { alertController in
+                                        message: self.globars?.data ?? "Попробуй снова", completion: { alertController in
                                             self.present(alertController, animated: true, completion: nil)
                                         })
                     } else {
-                        print("Show map")
-//                        self.performSegue(withIdentifier: "Map", sender: nil)
-                        self.pushContainerViewController()
-                        
+                        // Show Map
+                        self.pushMapViewController()
                     }
                 }
         }
     }
     
-    var urlString = "https://test.globars.ru/api/auth/login"
-    var isVertical = true
+    internal var urlString = "https://test.globars.ru/api/auth/login"
+    private var isVertical = true
     
     //MARK: - IBOutlets
+    
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var passTextField: UITextField!
@@ -70,22 +68,15 @@ class AuthorizationViewController: UIViewController, URLStringDelegate {
     func settingSubviews() {
     }
     
-//MARK: - IBActions
+    //MARK: - IBActions
+    
     @IBAction func enterPresed(_ sender: UIButton) {
-        enter()
+        parsingFromCars()
     }
     
     //MARK: - Navigation
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "Map" {
-           let mapController = segue.destination as! MapViewController
-            guard let token = globars?.data else { return }
-            mapController.token = token
-        }
-    }
-    
-    func enter() {
+    private func parsingFromCars() {
         networking.postMethod(urlString: urlString,
                                        userName: nameTextField.text ?? "",
                                        password: passTextField.text ?? "",
@@ -99,15 +90,14 @@ class AuthorizationViewController: UIViewController, URLStringDelegate {
                                             print(error)
                                         }
                                        })
-//        postMethod(url: url, userName: nameTextField.text!,
-//                   password: passTextField.text!)
         indicator.isHidden = false
         indicator.startAnimating()
     }
+    
     //MARK: - Helpers Methods
     
-    // Get Orientation
-    func getOrientation() {
+    // Setup Subviews
+    private func getOrientation() {
         let width = view.bounds.width
         let height = view.bounds.height
         if height > width {
@@ -117,7 +107,7 @@ class AuthorizationViewController: UIViewController, URLStringDelegate {
         }
     }
     
-    func setupSubviews() {
+    private func setupSubviews() {
         buttonEnter.layer.cornerRadius = 5
         indicator.isHidden = true
         if isVertical {
@@ -126,8 +116,9 @@ class AuthorizationViewController: UIViewController, URLStringDelegate {
             stackView.axis = .horizontal
         }
     }
+    //MARK: - Navigation
     
-    func pushContainerViewController() {
+    private func pushMapViewController() {
         guard let vc = UIStoryboard(name:"Main", bundle:nil).instantiateViewController(withIdentifier: "MapVC") as? MapViewController else {
             print("Could not instantiate view controller with identifier of type ContainerViewController")
             return
@@ -138,7 +129,7 @@ class AuthorizationViewController: UIViewController, URLStringDelegate {
         self.present(vc, animated: true)
     }
 }
-
+    //MARK: - UITextFieldDelegate
 extension AuthorizationViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -147,7 +138,7 @@ extension AuthorizationViewController: UITextFieldDelegate {
             textField.resignFirstResponder()
             passTextField.becomeFirstResponder()
         } else if textField == passTextField {
-            enter()
+            parsingFromCars()
         }
         return true
     }

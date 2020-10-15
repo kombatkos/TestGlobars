@@ -8,17 +8,19 @@
 import UIKit
 import GoogleMaps
 
-class MapViewController: UIViewController, GMSMapViewDelegate {
+class MapViewController: UIViewController, GMSMapViewDelegate, MapViewControllerDelegate {
     
     //MARK: - Properties
-    let networking = Networking()
-    var menuViewController: MenuViewController!
     
-    let urlString =  "https://test.globars.ru/api/tracking/sessions/"
+    private let networking = Networking()
+    private let mapManager = MapManager()
+    private var menuViewController: MenuViewController!
+    
+    private let urlString =  "https://test.globars.ru/api/tracking/sessions/"
     var token: String?
     var userData: UserData?
     var carsData: ListCars?
-    var id: String? {
+    private var id: String? {
         willSet {
             guard let id = newValue else { return print("id is nil")}
             print(id)
@@ -37,10 +39,10 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         }
     }
     
-    var index: Int?
+    private var index: Int?
     var markers = [GMSMarker]()
     
-    //MARK: - IB Outlets & Actions
+    //MARK: - IB Outlets
     
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var plusButton: UIButton!
@@ -50,6 +52,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        mapManager.delegate = self
         getID()
         
         mapView.addSubview(minusButton)
@@ -60,8 +63,10 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        getPlaceCar()
+        mapManager.getPlaceCar(carsData: carsData, index: index)
     }
+    
+    //MARK: - IBActions
     
     @IBAction func plusButtonAction(_ sender: UIButton) {
         let cameraUpdate = GMSCameraUpdate.zoomIn()
@@ -85,10 +90,10 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         }
     }
     
-    //MARK:- Helpers Methods
+    //MARK: - Networking
     
     // get ID
-    func getID() {
+    private func getID() {
         networking.getMethod(urlString: urlString, token: token, completion: { data in
             do {
                 let decoder = JSONDecoder()
@@ -103,61 +108,9 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
         })
     }
     
-    func getPlaceCar() {
-        
-        guard let cars = carsData?.data else { return }
-//        var markers = [GMSMarker]()
-        for car in cars {
-            if car.checked {
-                let latitude = car.position.lt
-                let longitude = car.position.ln
-                let name = car.name
-
-                // Creates a marker in the center of the map.
-                var marker = GMSMarker()
-                marker = GMSMarker(position: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
-                marker.map = mapView
-                marker.title = name
-                //        marker.snippet = "qweqwewe"
-                marker.icon = UIImage(named: name)
-                if !car.eye {
-                    marker.opacity = 0.5
-                }
-                self.markers.append(marker)
-            }
-        }
-        let selectCar = cars[index ?? 0]
-        
-        markers[index ?? 0].map = mapView
-        if !selectCar.eye {
-            markers[index ?? 0].opacity = 0.5
-        }
-        markers[index ?? 0].snippet = selectCar.name
-        mapView.selectedMarker =  markers[index ?? 0]
-        carIsHighlighter(index: index ?? 0)
-    }
-
 }
 
-extension MapViewController {
-    
-    func carIsHighlighter(index: Int?) {
-        guard let index = index else { return }
-        
-        guard let cars = carsData?.data else { return }
-        print("Камера на выбранный обЪект по индексу \(index)")
-        
-        let northEast = CLLocationCoordinate2D(latitude: cars[index].position.lt, longitude: cars[index].position.ln)
-        let southWest = CLLocationCoordinate2D(latitude: cars[index].position.lt, longitude: cars[index].position.ln)
-        let bounds = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
-
-        let update = GMSCameraUpdate.fit(bounds, withPadding: 50.0)
-        mapView.setMinZoom(10, maxZoom: 15)
-        mapView.moveCamera(update)
-        
-    }
-    
-}
+    //MARK: - MenuViewControllerDelegate
 
 extension MapViewController: MenuViewControllerDelegate {
     
@@ -166,6 +119,7 @@ extension MapViewController: MenuViewControllerDelegate {
         
         UIView.animate(withDuration: 0.3) {
             self.menuViewController.view.frame = CGRect(x: 0, y: indent, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+            
             self.menuViewController.carsData = carsData
             self.addChild(self.menuViewController)
             self.view.addSubview(self.menuViewController.view)
@@ -184,11 +138,12 @@ extension MapViewController: MenuViewControllerDelegate {
             self.menuViewController.view.removeFromSuperview()
             AppDelegate.menuIsMove = true
         }
+        
         if index != nil {
 //            mapView.clear()
 //            getPlaceCar()
             mapView.selectedMarker = markers[index!]
-            carIsHighlighter(index: index)
+            mapManager.carIsHighlighter(carsData: carsData, index: index)
         }
     }
 }
