@@ -56,6 +56,8 @@ class AuthorizationViewController: UIViewController, URLStringDelegate {
         super.viewDidLoad()
         networking.delegate = self
         alert.delegate = self
+        nameTextField.delegate = self
+        passTextField.delegate = self
         getOrientation()
     }
     
@@ -65,8 +67,25 @@ class AuthorizationViewController: UIViewController, URLStringDelegate {
         setupSubviews()
     }
     
+    func settingSubviews() {
+    }
+    
 //MARK: - IBActions
     @IBAction func enterPresed(_ sender: UIButton) {
+        enter()
+    }
+    
+    //MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "Map" {
+           let mapController = segue.destination as! MapViewController
+            guard let token = globars?.data else { return }
+            mapController.token = token
+        }
+    }
+    
+    func enter() {
         networking.postMethod(urlString: urlString,
                                        userName: nameTextField.text ?? "",
                                        password: passTextField.text ?? "",
@@ -85,17 +104,8 @@ class AuthorizationViewController: UIViewController, URLStringDelegate {
         indicator.isHidden = false
         indicator.startAnimating()
     }
-    
-    //MARK: - Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "Map" {
-           let mapController = segue.destination as! MapViewController
-            guard let token = globars?.data else { return }
-            mapController.token = token
-        }
-    }
     //MARK: - Helpers Methods
+    
     // Get Orientation
     func getOrientation() {
         let width = view.bounds.width
@@ -129,3 +139,17 @@ class AuthorizationViewController: UIViewController, URLStringDelegate {
     }
 }
 
+extension AuthorizationViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == nameTextField {
+            textField.resignFirstResponder()
+            passTextField.becomeFirstResponder()
+        } else if textField == passTextField {
+            enter()
+        }
+        return true
+    }
+   
+}

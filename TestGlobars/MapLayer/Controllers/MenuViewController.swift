@@ -30,7 +30,6 @@ class MenuViewController: UIViewController {
         tableView.register(MenuTableCell.self, forCellReuseIdentifier: MenuTableCell.reuseId)
 //        view.addSubview(tableView)
 //        tableView.frame = view.frame
-//
         tableView.separatorStyle = .none
         tableView.rowHeight = 70
         tableView.backgroundColor = .darkGray

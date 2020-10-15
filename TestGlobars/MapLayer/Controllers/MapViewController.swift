@@ -45,6 +45,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate {
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var minusButton: UIButton!
+    @IBOutlet weak var navigationBar: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -161,8 +162,10 @@ extension MapViewController {
 extension MapViewController: MenuViewControllerDelegate {
     
     func showMenu(carsData: ListCars?) {
+        let indent = UIScreen.main.bounds.height - mapView.bounds.height
+        
         UIView.animate(withDuration: 0.3) {
-            self.menuViewController.view.frame = CGRect(x: 0, y: 60, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+            self.menuViewController.view.frame = CGRect(x: 0, y: indent, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
             self.menuViewController.carsData = carsData
             self.addChild(self.menuViewController)
             self.view.addSubview(self.menuViewController.view)
@@ -172,8 +175,10 @@ extension MapViewController: MenuViewControllerDelegate {
     
     func hideMenu(index: Int?) {
         self.index = index
+        let indent = UIScreen.main.bounds.height - mapView.bounds.height
+        
         UIView.animate(withDuration: 0.3) {
-            self.menuViewController.view.frame = CGRect(x: -UIScreen.main.bounds.size.width, y: 60, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+            self.menuViewController.view.frame = CGRect(x: -UIScreen.main.bounds.size.width, y: indent, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
             self.index = index
         } completion: { (finished) in
             self.menuViewController.view.removeFromSuperview()
