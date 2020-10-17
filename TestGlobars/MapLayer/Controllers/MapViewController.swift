@@ -110,7 +110,7 @@ class MapViewController: UIViewController, GMSMapViewDelegate, MapViewController
     
 }
 
-    //MARK: - MenuViewControllerDelegate
+//MARK: - MenuViewControllerDelegate
 
 extension MapViewController: MenuViewControllerDelegate {
     

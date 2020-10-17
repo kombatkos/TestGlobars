@@ -46,7 +46,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: MenuTableCell.reuseId) as! MenuTableCell
 //        let menuModel = Menu(rawValue: indexPath.row)
         let car = carsData?.data[indexPath.row]
-        cell.iconImageView.image = UIImage(named: car?.name ?? "")
+        cell.iconImageView.image = UIImage(named: car?.name ?? "Audi")
         cell.myLabel.text = car?.name ?? ""
         return cell
     }

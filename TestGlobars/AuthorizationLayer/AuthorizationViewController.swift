@@ -65,9 +65,6 @@ class AuthorizationViewController: UIViewController, URLStringDelegate {
         setupSubviews()
     }
     
-    func settingSubviews() {
-    }
-    
     //MARK: - IBActions
     
     @IBAction func enterPresed(_ sender: UIButton) {
@@ -109,12 +106,24 @@ class AuthorizationViewController: UIViewController, URLStringDelegate {
     
     private func setupSubviews() {
         buttonEnter.layer.cornerRadius = 5
+        passTextField.layer.borderColor = CGColor(red: 169, green: 169, blue: 169, alpha: 1)
         indicator.isHidden = true
         if isVertical {
             stackView.axis = .vertical
         } else {
             stackView.axis = .horizontal
         }
+        
+        passTextField.attributedPlaceholder = NSAttributedString(string: "password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        nameTextField.attributedPlaceholder = NSAttributedString(string: "login", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        passTextField.layer.cornerRadius = 5.0
+        passTextField.layer.borderWidth = 1.0
+        passTextField.layer.borderColor = UIColor.lightGray.cgColor
+        passTextField.layer.masksToBounds = true
+        nameTextField.layer.cornerRadius = 5.0
+        nameTextField.layer.borderWidth = 1.0
+        nameTextField.layer.borderColor = UIColor.lightGray.cgColor
+        nameTextField.layer.masksToBounds = true
     }
     //MARK: - Navigation
     
